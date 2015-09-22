@@ -17,12 +17,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="iotsmartlock.smartlockproject.MainActivity" />
+            android:name=".loggedInActivity"
+            android:label="@string/title_activity_logged_in" >
+        </activity>
+        <activity
+            android:name=".alertsActivity"
+            android:label="@string/title_activity_alerts" >
+        </activity>
+        <activity
+            android:name=".controlActivity"
+            android:label="@string/title_activity_control" >
+        </activity>
+        <activity
+            android:name=".newuserActivity"
+            android:label="@string/title_activity_newuser" >
         </activity>
     </application>
 

@@ -22,6 +22,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_control">controlActivity</string>
     <string name="title_activity_newuser">newuserActivity</string>
-    <string name="hash_output">SHA-256 Hash</string>
+    <string name="hash_output"></string>
 
 </resources>

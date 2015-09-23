@@ -54,11 +54,11 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
+        android:id="@+id/hashValue"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/hash_output"
-        android:id="@+id/hashValue"
         android:layout_below="@+id/loginStatus"
         android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF" />

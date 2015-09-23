@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import java.security.Security;
 import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,18 +81,20 @@ public class MainActivity extends AppCompatActivity {
 
         EditText username = (EditText) findViewById(R.id.usernameEntry);
         EditText password = (EditText) findViewById(R.id.passwordEntry);
-
         TextView error = (TextView) findViewById(R.id.loginStatus);
-        TextView hash = (TextView) findViewById(R.id.hashValue);
-
+        //TextView hashText = (TextView) findViewById(R.id.hashValue); for debug
         String usrMessage = username.getText().toString();
         String pwdMessage = password.getText().toString();
 
         intent.putExtra(LOGIN_DATA, usrMessage);
         intent.putExtra(LOGIN_DATA, pwdMessage);
 
-        String hashed = getSHA256(pwdMessage);
-        hash.setText(hashed);
+        // Generate a random number for authentication
+        Random randNum = new Random();
+        String random = new Integer(randNum.nextInt()).toString();
+
+        String hashed = getSHA256(pwdMessage, random);
+        //hashText.setText(hashed);  // see hash for debug
 
         // Check if the user is authenticated
         if (authenticated){
@@ -104,10 +107,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Compute SHA-256 hash value for given string */
-    public String getSHA256(String string) {
-        // Generate SHA 256 hash for user authentication
+    public String getSHA256(String password, String randNum) {
+
         MessageDigest md = null;
-        byte[] testbyte = new byte[];
+        byte[] output;
+        String s = randNum.concat(password);
 
         try {
             md = MessageDigest.getInstance("SHA-256");
@@ -116,12 +120,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         md.reset();
+        md.update(s.getBytes());
+        output = md.digest();
 
+        StringBuffer hexString = new StringBuffer();
+        for(int i=0; i<output.length;i++){
+            hexString.append(Integer.toHexString(0xFF & output[i]));
+        }
 
-
-        return sha256;
+        return hexString.toString();
     }
 
+    /* Update Parse with specified information
+     */
     public void sendParse(){
 
     }

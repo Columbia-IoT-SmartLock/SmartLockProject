@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 
 public class newuserActivity extends AppCompatActivity {
 
+    private static final String TAG = "debug.info";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,7 @@ public class newuserActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         RelativeLayout main_view = (RelativeLayout) findViewById(R.id.main_view);
 
+        Intent loginAct = new Intent(this, MainActivity.class);
         Intent loggedInAct = new Intent(this, loggedInActivity.class);
         Intent alertsAct = new Intent(this, alertsActivity.class);
         Intent controlAct = new Intent(this, controlActivity.class);

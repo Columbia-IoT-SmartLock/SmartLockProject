@@ -1,7 +1,8 @@
 package iotsmartlock.smartlockproject;
 
+
+import android.util.Log;
 import android.content.Intent;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +11,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.RelativeLayout;
-import java.security.Security;
+
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
 import java.util.Random;
@@ -18,12 +22,26 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     public final static String LOGIN_DATA = "com.iotsmartlock.smartlockproject.MESSAGE";
+    private static final String TAG = "debug.info";
     public boolean authenticated;
+
+    // Parse Keys
+    public String appID = "29ZCCsazE4ZEDxQEv5yTE8qj4MJ5Og8oM4mVegdp";
+    public String clientID = "uAqfuOPedeTjqmw6MkXC0tVcUxl1d6bNyz8pMMyF";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Enable Parse for "Android Lock"
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, appID, clientID);
+
         setContentView(R.layout.activity_main);
+
+        //ParseObject testObject = new ParseObject("TestObject");
+        //testObject.put("foo", "bar");
+        //testObject.saveInBackground();
     }
 
     @Override
@@ -49,17 +67,21 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_login:
                 // Already on login page
+                Log.i(TAG, "Setting Clicked: Go to Login");
                 return true;
 
             case R.id.menu_lockstatus:
+                Log.i(TAG, "Setting Clicked: Go to Lock Options");
                 startActivity(controlAct);
                 return true;
 
             case R.id.menu_newuser:
+                Log.i(TAG, "Setting Clicked: Go to New User");
                 startActivity(newUserAct);
                 return true;
 
             case R.id.menu_alerts:
+                Log.i(TAG, "Setting Clicked: Go to Alerts");
                 startActivity(alertsAct);
                 return true;
 
@@ -85,15 +107,18 @@ public class MainActivity extends AppCompatActivity {
         //TextView hashText = (TextView) findViewById(R.id.hashValue); for debug
         String usrMessage = username.getText().toString();
         String pwdMessage = password.getText().toString();
-
+        Log.i(TAG, "Username: " + usrMessage);
+        Log.i(TAG, "Password: " + pwdMessage);
         intent.putExtra(LOGIN_DATA, usrMessage);
         intent.putExtra(LOGIN_DATA, pwdMessage);
 
         // Generate a random number for authentication
         Random randNum = new Random();
         String random = new Integer(randNum.nextInt()).toString();
+        Log.i(TAG, "Random Number: " + random);
 
         String hashed = getSHA256(pwdMessage, random);
+        Log.i(TAG, "Hash Value: " + hashed);
         //hashText.setText(hashed);  // see hash for debug
 
         // Check if the user is authenticated
@@ -106,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /* Compute SHA-256 hash value for given string */
+    /* Compute SHA-256 hash value for given strings
+    *  Concatenates password and random number for unique values each time
+    *  */
     public String getSHA256(String password, String randNum) {
 
         MessageDigest md = null;
@@ -130,13 +157,5 @@ public class MainActivity extends AppCompatActivity {
 
         return hexString.toString();
     }
-
-    /* Update Parse with specified information
-     */
-    public void sendParse(){
-
-    }
-
-
 
 }
